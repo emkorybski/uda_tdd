@@ -62,7 +62,7 @@ $(function() {
          * and that the URL is not empty.
          */
         function test_feed_urls(x) {
-            it('URLs are defined', function() {
+            it('have URLs defined', function() {
                 expect(allFeeds[x].url).toBeDefined();
                 expect(allFeeds[x].url).not.toBe(0);
             });
@@ -78,7 +78,7 @@ $(function() {
          */
 
         function test_feed_names(y) {
-            it('names are defined', function() {
+            it('have names defined', function() {
                 expect(allFeeds[y].name).toBeDefined();
                 expect(allFeeds[y].name).not.toBe(0);
             });
@@ -101,10 +101,9 @@ $(function() {
          *
          */
 
-        it('Menu is hidden by default', function() {
-            var todo = document.getElementsByClassName("menu-hidden");
-            expect(todo.length).not.toBe(0);
-            expect(todo.length).not.toBe(0);
+        it('is hidden by default', function() {
+            var menu_hidden = document.getElementsByClassName("menu-hidden");
+            expect(menu_hidden.length).not.toBe(0);
         });
 
         /* TODO: Write a test that ensures the menu changes
@@ -113,9 +112,30 @@ $(function() {
          * clicked and does it hide when clicked again.
          */
 
+        it('toggling on click works', function () {
+            $('.menu-icon-link').trigger('click');
+            expect($('body').hasClass('menu-hidden')).toBe(false);
+            $('.menu-icon-link').trigger('click');
+            expect($('body').hasClass('menu-hidden')).toBe(true);
+        });
+
     });
 
     /* TODO: Write a new test suite named "Initial Entries" */
+
+    beforeEach(function (done) {
+        $('.feed').empty();
+        loadFeed(0, function () {
+            entriesStart = $('.feed').find(allFeeds.url);
+            done();
+        });
+        loadFeed(1, function () {
+            entriesEnd = $('.feed').find(allFeeds.url);
+            done();
+        });
+    });
+
+    describe('Initial Entries', function() {
 
         /* TODO: Write a test that ensures when the loadFeed
          * function is called and completes its work, there is at least
@@ -124,10 +144,26 @@ $(function() {
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
 
+            it('New feed is different to old one', function () {
+                expect(entriesStart).not.toBe(entriesEnd);
+            });
+
+    });
+
     /* TODO: Write a new test suite named "New Feed Selection" */
+
+    /*
+    describe('New Feed Selection', function() {
 
         /* TODO: Write a test that ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
+
+       //it('New feed is different to old one', function () {
+            //expect(entriesStart).not.toBe(entriesEnd);
+      //  });
+
+    //});
+
 }());
